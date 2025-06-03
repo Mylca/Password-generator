@@ -44,25 +44,76 @@ def entry():
     pw_entry.insert(0, my_password)
 
 
-root = Tk()
-root.title('Password generator')
-root.geometry('500x300')
+def copy_to_clipboard():
+    text = pw_entry.get()
+    root.clipboard_clear()
+    root.clipboard_append(text)
 
 
-pw_entry = Entry(root, text='', font=('Calibri', 24))
-pw_entry.pack(pady=20, padx=20)
+def on_close():
+    root.withdraw()
+    root.clipboard_clear()
+    root.clipboard_append("")
+    root.update()
+    root.destroy()
 
 
-my_frame = Frame(root)
-my_frame.pack(pady=20)
+
+pw_entry = Entry(frame,
+                 text='',
+                 font=('Calibri', 30),
+                 bg=bg_color,
+                 fg='white'
+                 )
+
+pw_entry.grid(row=1,
+              column=0,
+              columnspan=3,
+              padx=95,
+              pady=50,
+              sticky='w'
+              )
 
 
-my_button = Button(my_frame, text='Generate', command=entry)
-my_button.grid(row=0, column=0, padx=10)
+generate_password_button = Button(frame,
+                                  text='Generate',
+                                  cursor='hand2',
+                                  activebackground='#badee2',
+                                  activeforeground='black',
+                                  command=entry,
+                                  font=('Calibri', 14),
+                                  bg=bg_color,
+                                  fg='white'
+
+                                  )
+
+generate_password_button.grid(row=2,
+                              column=0,
+                              padx=100,
+                              pady=20,
+                              sticky='w'
+                              )
 
 
-clip_button = Button(my_frame, text='Copy')
-clip_button.grid(row=0, column=1, padx=10)
+copy_to_clipboard_button = Button(frame,
+                                  text='Copy',
+                                  cursor='hand2',
+                                  activebackground='#badee2',
+                                  activeforeground='black',
+                                  command=copy_to_clipboard,
+                                  font=('Calibri', 14),
+                                  bg=bg_color,
+                                  fg='white'
+                                  )
 
+copy_to_clipboard_button.grid(row=2,
+                              column=1,
+                              padx=100,
+                              pady=20,
+                              sticky='e'
+                              )
+
+
+root.protocol("WM_DELETE_WINDOW", on_close)
 
 root.mainloop()
